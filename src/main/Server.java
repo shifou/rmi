@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import data.msgType;
 
 public class Server {
+	public static Registry a;
 	public static void main(String args[]) throws Exception {
 		int registryPort=0;
 		if (args.length != 2) {
@@ -47,8 +48,8 @@ public class Server {
 			System.out.println("file list not found");
 			return;
 		}
-		Registry a;
-			a = new Registry(registryPort);
+		
+		a = new Registry(registryPort);
 		if(a==null){
 			System.out.println("bind registry port error");
 			System.exit(-1);

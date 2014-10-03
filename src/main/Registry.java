@@ -1,15 +1,18 @@
 package main;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ror.*;
 import data.msgType;
 
 public class Registry {
-	public ConcurrentHashMap<String, Object> map;
+	public ConcurrentHashMap<String, Object> mp;
 	public ServerSocket listenSocket;
 	public int requestId;
 	private boolean running;
@@ -17,6 +20,7 @@ public class Registry {
 	public Registry(int registryPort) {
 		try {
 			listenSocket = new ServerSocket((short) registryPort);
+			mp = new ConcurrentHashMap<String, Object>();
 			System.out.println("Registry start listen at: " + registryPort);
 			running = true;
 			requestId = 1;
@@ -66,8 +70,44 @@ public class Registry {
 	}
 
 	public void addService(ArrayList<String> serviceNames) {
-		// TODO Auto-generated method stub
-
+		String []args=null;
+		RemoteObjectRef p =null;
+		for(String each: serviceNames){
+		try {
+			Class<?> obj = Class.forName("application." + each);
+			Constructor<?> objConstructor = obj.getConstructor(String[].class);
+			p = (RemoteObjectRef) objConstructor
+					.newInstance(new Object[] { args });
+		} catch (ClassNotFoundException e) {
+			System.out.println("no such class " + each);
+			continue;
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			continue;
+		}
+		mp.put(each,p);
+		}
 	}
 
 }

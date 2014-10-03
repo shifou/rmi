@@ -31,7 +31,6 @@ public class RegistryService implements Runnable {
 
 	@Override
 	public void run() {
-		try {
 			Message receiveMessage;
 			while (running) {
 				try {
@@ -53,11 +52,54 @@ public class RegistryService implements Runnable {
 					continue;
 				}
 				switch (receiveMessage.getResponType()) {
-				
+				case LOOKUP:
+					handleLOOKUP(receiveMessage);
+					break;
+				case REBIND:
+					handleREBIND(receiveMessage);
+					break;
+				case LIST:
+					handleLIST(receiveMessage);
+					break;
+				case UNBIND:
+					handleUNBIND(receiveMessage);
+					break;
 				}
-	}
-		}catch(Exception e){
-			
+			}
+
 		}
+	public int send(Message mes) throws IOException {
+		try
+		{
+			
+
+				objOutput.writeObject(mes);
+				objOutput.flush();
+			
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		return 1;
+	}
+
+	private void handleUNBIND(Message receiveMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleLIST(Message receiveMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleREBIND(Message receiveMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleLOOKUP(Message receiveMessage) {
+		// TODO Auto-generated method stub
+		
 	}
 }

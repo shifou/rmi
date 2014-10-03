@@ -3,9 +3,10 @@ import java.io.Serializable;
 import java.net.InetAddress;
 public class Message implements Serializable {
 
-	public int getResponType() {
+	msgType tp;
+	public msgType getResponType() {
 		// TODO Auto-generated method stub
-		return 0;
+		return tp;
 	}
 	
 }
