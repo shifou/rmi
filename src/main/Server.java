@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import data.msgType;
 
 public class Server {
-	public static Registry a;
+	public static Registry reg;
 	public static void main(String args[]) throws Exception {
 		int registryPort=0;
 		if (args.length != 2) {
@@ -32,7 +32,7 @@ public class Server {
 			return;
 		}
 		String serviceList = args[1];
-		ArrayList<String> serviceNames=new ArrayList<String>(); 
+		ArrayList<String> services=new ArrayList<String>(); 
 		try {
 			File file = new File(serviceList);
 			BufferedInputStream fis = new BufferedInputStream(
@@ -41,7 +41,7 @@ public class Server {
 					"utf-8"));
 			String line;
 			while ((line = b.readLine()) != null) {
-				serviceNames.add(line);
+				services.add(line);
 			}
 
 		} catch (Exception e) {
@@ -49,13 +49,13 @@ public class Server {
 			return;
 		}
 		
-		a = new Registry(registryPort);
-		if(a==null){
+		reg = new Registry(registryPort);
+		if(reg==null){
 			System.out.println("bind registry port error");
 			System.exit(-1);
 		}
-		a.addService(serviceNames);
-		a.listen();
+		reg.bind(services);
+		reg.listen();
 		System.out.println("Server close");
 	}
 }

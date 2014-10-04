@@ -8,5 +8,8 @@ public enum msgType {
 	LOOKUP,
 	LIST,
 	UNBIND,
-	INVOKE
+	INVOKEBYREF,
+	INVOKEBYVAL,
+	REPLY,
+	ERROR
 }

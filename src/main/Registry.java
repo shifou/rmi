@@ -71,19 +71,22 @@ public class Registry {
 		running = false;
 	}
 
-	public void addService(ArrayList<String> serviceNames) {
-		String []args=null;
+	public void bind(ArrayList<String> serviceNames) {
 		RemoteObjectRef p =null;
-		String each=null;
+		String []line=null;
 		for(String hold: serviceNames){
 		try {
-			each= hold.split(" ")[0];
-			Class<?> obj = Class.forName("application." + each);
+			line= hold.split(" ");
+			String[] args = new String[line.length - 1];
+			for (int i = 1; i < line.length; i++) {
+				args[i - 1] = line[i];
+			}
+			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
 			p = (RemoteObjectRef) objConstructor
 					.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
-			System.out.println("no such class " + each);
+			System.out.println("no such class " + line[0]);
 			continue;
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
@@ -110,8 +113,8 @@ public class Registry {
 			e.printStackTrace();
 			continue;
 		}
-		mp.put(each,p);
-		realmp.put(each, p.localize());
+		mp.put(line[0],p);
+		realmp.put(line[0], p.localize());
 		}
 	}
 

@@ -64,9 +64,13 @@ public class RegistryService implements Runnable {
 				case UNBIND:
 					handleUNBIND(receiveMessage);
 					break;
-				case INVOKE:
+				case INVOKEBYVAL:
+				case INVOKEBYREF:
 					handleINVOKE(receiveMessage);
 					break;
+				default:
+					System.out.println("receive messgae error");
+					continue;
 				}
 			}
 
@@ -92,13 +96,28 @@ public class RegistryService implements Runnable {
 	}
 
 	private void handleUNBIND(Message receiveMessage) {
-		// TODO Auto-generated method stub
-		
+		String name= receiveMessage.getName();
+		if(Server.reg.mp.containsKey(name))
+			Server.reg.mp.remove(name);
+		if(Server.reg.mp.containsKey(name));
+		System.out.println("unbind "+name+" from registry!");
 	}
 
 	private void handleLIST(Message receiveMessage) {
-		// TODO Auto-generated method stub
-		
+		String ans="";
+		int i=1;
+		for(String each: Server.reg.mp.keySet()){
+			ans+=(i+":\t"+each+"\n");
+		}
+		if(ans.equals(""))
+			ans="no service available right now!";
+		Message mes= new Message(ans,msgType.REPLY);
+		try {
+			send(mes);
+		} catch (IOException e) {
+			System.out.println("send list error");
+			e.printStackTrace();
+		}
 	}
 
 	private void handleREBIND(Message receiveMessage) {
