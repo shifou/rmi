@@ -12,7 +12,8 @@ import ror.*;
 import data.msgType;
 
 public class Registry {
-	public ConcurrentHashMap<String, Object> mp;
+	public ConcurrentHashMap<String, RemoteObjectRef> mp;
+	public ConcurrentHashMap<String, Object> realmp;
 	public ServerSocket listenSocket;
 	public int requestId;
 	private boolean running;
@@ -20,7 +21,8 @@ public class Registry {
 	public Registry(int registryPort) {
 		try {
 			listenSocket = new ServerSocket((short) registryPort);
-			mp = new ConcurrentHashMap<String, Object>();
+			mp = new ConcurrentHashMap<String, RemoteObjectRef>();
+			realmp = new ConcurrentHashMap<String, Object>();
 			System.out.println("Registry start listen at: " + registryPort);
 			running = true;
 			requestId = 1;
@@ -72,8 +74,10 @@ public class Registry {
 	public void addService(ArrayList<String> serviceNames) {
 		String []args=null;
 		RemoteObjectRef p =null;
-		for(String each: serviceNames){
+		String each=null;
+		for(String hold: serviceNames){
 		try {
+			each= hold.split(" ")[0];
 			Class<?> obj = Class.forName("application." + each);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
 			p = (RemoteObjectRef) objConstructor
@@ -107,6 +111,7 @@ public class Registry {
 			continue;
 		}
 		mp.put(each,p);
+		realmp.put(each, p.localize());
 		}
 	}
 

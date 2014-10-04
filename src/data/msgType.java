@@ -7,5 +7,6 @@ public enum msgType {
 	REBIND,
 	LOOKUP,
 	LIST,
-	UNBIND
+	UNBIND,
+	INVOKE
 }

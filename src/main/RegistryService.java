@@ -31,7 +31,7 @@ public class RegistryService implements Runnable {
 
 	@Override
 	public void run() {
-			Message receiveMessage;
+			Message receiveMessage=null;
 			while (running) {
 				try {
 
@@ -44,7 +44,7 @@ public class RegistryService implements Runnable {
 				catch(EOFException e)
 				{
 					//System.out.println("detect disconnected message");
-					continue;
+					running=false;
 				}
 				catch(Exception e)
 				{
@@ -64,10 +64,18 @@ public class RegistryService implements Runnable {
 				case UNBIND:
 					handleUNBIND(receiveMessage);
 					break;
+				case INVOKE:
+					handleINVOKE(receiveMessage);
+					break;
 				}
 			}
 
 		}
+	private void handleINVOKE(Message receiveMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public int send(Message mes) throws IOException {
 		try
 		{
