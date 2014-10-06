@@ -127,6 +127,10 @@ public class RegistryService implements Runnable {
 
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
-		
+		String name= receiveMessage.getName();
+		if(Server.reg.mp.containsKey(name)){
+			
+		}
+			
 	}
 }

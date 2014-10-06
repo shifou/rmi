@@ -117,5 +117,51 @@ public class Registry {
 		realmp.put(line[0], p.localize());
 		}
 	}
+	public void bind(String service) {
+		RemoteObjectRef p =null;
+		String []line=null;
+		String hold=service;
+		try {
+			line= hold.split(" ");
+			String[] args = new String[line.length - 1];
+			for (int i = 1; i < line.length; i++) {
+				args[i - 1] = line[i];
+			}
+			Class<?> obj = Class.forName("application." + line[0]);
+			Constructor<?> objConstructor = obj.getConstructor(String[].class);
+			p = (RemoteObjectRef) objConstructor
+					.newInstance(new Object[] { args });
+		} catch (ClassNotFoundException e) {
+			System.out.println("no such class " + line[0]);
+			//continue;
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//continue;
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//continue;
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//continue;
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//continue;
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//continue;
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		mp.put(line[0],p);
+		realmp.put(line[0], p.localize());
+		
+	}
 
 }
