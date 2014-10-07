@@ -13,8 +13,9 @@ import data.Message;
 import data.msgType;
 
 public class Registry {
+
+	public ConcurrentHashMap<String, RemoteObjectReference> mp;
 	public ConcurrentHashMap<String, Object> realmp;
-	public ConcurrentHashMap<String, RemoteObjectRef> mp;
 	public ServerSocket listenSocket;
 	public String ipaddr;
 	public int requestId;
@@ -24,7 +25,7 @@ public class Registry {
 		try {
 			ipaddr=ip;
 			listenSocket = new ServerSocket((short) registryPort);
-			mp = new ConcurrentHashMap<String, RemoteObjectRef>();
+			mp = new ConcurrentHashMap<String, RemoteObjectReference>();
 			realmp = new ConcurrentHashMap<String, Object>();
 			System.out.println("Registry start listen at: " + registryPort);
 			running = true;
@@ -106,7 +107,7 @@ public class Registry {
 		}
 	}
 	public void bind(ArrayList<String> serviceNames) {
-		RemoteObjectRef ror=null;
+		RemoteObjectReference ror=null;
 		Object p =null;
 		String []line=null;
 		for(String hold: serviceNames){
@@ -118,7 +119,7 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p = (RemoteObjectRef) objConstructor
+			p = (RemoteObjectReference) objConstructor
 					.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
@@ -154,8 +155,12 @@ public class Registry {
 	}
 
 	public void bind(String service) {
+<<<<<<< HEAD
 		RemoteObjectRef ror=null;
 		Object p =null;
+=======
+		RemoteObjectReference p =null;
+>>>>>>> c43c85f9f0c8bee5bbc3d77afdab483c0ce592d5
 		String []line=null;
 		String hold=service;
 		try {
@@ -166,7 +171,11 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
+<<<<<<< HEAD
 			p =  objConstructor
+=======
+			p = (RemoteObjectReference) objConstructor
+>>>>>>> c43c85f9f0c8bee5bbc3d77afdab483c0ce592d5
 					.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
