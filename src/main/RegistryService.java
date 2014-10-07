@@ -34,9 +34,7 @@ public class RegistryService implements Runnable {
 			Message receiveMessage=null;
 			while (running) {
 				try {
-
 					receiveMessage = (Message) objInput.readObject();
-					
 				} catch (ClassNotFoundException e) {
 					//System.out.println("read disconnected message");
 					continue;
@@ -58,8 +56,7 @@ public class RegistryService implements Runnable {
 				case LIST:
 					handleLIST(receiveMessage);
 					break;
-				case INVOKEBYVAL:
-				case INVOKEBYREF:
+				case INVOKE:
 					handleINVOKE(receiveMessage);
 					break;
 				default:
@@ -106,9 +103,11 @@ public class RegistryService implements Runnable {
 		// TODO Auto-generated method stub
 		String name= receiveMessage.getName();
 		if(Server.reg.mp.containsKey(name)){
-			
+			Message mes= new Message(Server.reg.mp.get(name),msgType.PASSREF);
 		}else{
-			
+			if(Server.reg.realmp.containsKey(name)){
+			Message mes= new Message(Server.reg.realmp.get(name),msgType.PASSVAL);
+			}
 		}
 	}
 }

@@ -6,10 +6,11 @@ package data;
 public enum msgType {
 	REBIND,
 	LOOKUP,
+	LOOKUPFAIL,
+	PASSVAL,
+	PASSREF,
 	LIST,
-	UNBIND,
-	INVOKEBYREF,
-	INVOKEBYVAL,
+	INVOKE,
 	REPLY,
 	ERROR
 }
