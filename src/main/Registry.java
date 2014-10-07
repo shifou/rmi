@@ -91,10 +91,10 @@ public class Registry {
 	public void rebind(String name, Object ob) {
 		boolean check1=false;
 		if(Server.reg.mp.containsKey(name)){
-			Server.reg.mp.put(name,ob);
+			Server.reg.realmp.put(name,ob);
 			check1=true;
 		}else{
-			Server.reg.mp.put(name,ob);
+			Server.reg.realmp.put(name,ob);
 			
 		}
 		if(check1)
@@ -155,12 +155,9 @@ public class Registry {
 	}
 
 	public void bind(String service) {
-<<<<<<< HEAD
-		RemoteObjectRef ror=null;
+		RemoteObjectReference ror=null;
 		Object p =null;
-=======
-		RemoteObjectReference p =null;
->>>>>>> c43c85f9f0c8bee5bbc3d77afdab483c0ce592d5
+
 		String []line=null;
 		String hold=service;
 		try {
@@ -171,12 +168,7 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-<<<<<<< HEAD
-			p =  objConstructor
-=======
-			p = (RemoteObjectReference) objConstructor
->>>>>>> c43c85f9f0c8bee5bbc3d77afdab483c0ce592d5
-					.newInstance(new Object[] { args });
+			p = (RemoteObjectReference) objConstructor.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
 			//continue;
