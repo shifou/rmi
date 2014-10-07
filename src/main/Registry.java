@@ -118,7 +118,7 @@ public class Registry {
 		}
 	}
 	public void bind(String service) {
-		RemoteObjectRef p =null;
+		RemoteObjectReference p =null;
 		String []line=null;
 		String hold=service;
 		try {
@@ -129,7 +129,7 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p = (RemoteObjectRef) objConstructor
+			p = (RemoteObjectReference) objConstructor
 					.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
