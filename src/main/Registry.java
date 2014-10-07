@@ -9,17 +9,20 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ror.*;
+import data.Message;
 import data.msgType;
 
 public class Registry {
-	public ConcurrentHashMap<String, RemoteObjectRef> mp;
 	public ConcurrentHashMap<String, Object> realmp;
+	public ConcurrentHashMap<String, RemoteObjectRef> mp;
 	public ServerSocket listenSocket;
+	public String ipaddr;
 	public int requestId;
 	private boolean running;
 
-	public Registry(int registryPort) {
+	public Registry(int registryPort,String ip) {
 		try {
+			ipaddr=ip;
 			listenSocket = new ServerSocket((short) registryPort);
 			mp = new ConcurrentHashMap<String, RemoteObjectRef>();
 			realmp = new ConcurrentHashMap<String, Object>();
@@ -70,9 +73,41 @@ public class Registry {
 	public void stop() {
 		running = false;
 	}
-
+	private void unbind(String name) {
+		boolean check1=false;
+		if(Server.reg.mp.containsKey(name)){
+			Server.reg.mp.remove(name);
+			check1=true;
+		}
+		if(check1)
+		{
+			System.out.println("unbind "+name+" from registry!");
+		}
+		else{
+			System.out.println("unbind "+name+" from registry error!");
+			}
+	}
+	public void rebind(String name, Object ob) {
+		boolean check1=false;
+		if(Server.reg.mp.containsKey(name)){
+			Server.reg.mp.put(name,ob);
+			check1=true;
+		}else{
+			Server.reg.mp.put(name,ob);
+			
+		}
+		if(check1)
+		{
+			System.out.println("rebind "+name+" successfully!");
+		}
+		else{
+			System.out.println(name+" does not exist, will bind!");
+			bind(name);
+		}
+	}
 	public void bind(ArrayList<String> serviceNames) {
-		RemoteObjectRef p =null;
+		RemoteObjectRef ror=null;
+		Object p =null;
 		String []line=null;
 		for(String hold: serviceNames){
 		try {
@@ -113,12 +148,14 @@ public class Registry {
 			e.printStackTrace();
 			continue;
 		}
-		mp.put(line[0],p);
-		realmp.put(line[0], p.localize());
+		realmp.put(line[0],p);
+		mp.put(line[0],ror);
 		}
 	}
+
 	public void bind(String service) {
-		RemoteObjectRef p =null;
+		RemoteObjectRef ror=null;
+		Object p =null;
 		String []line=null;
 		String hold=service;
 		try {
@@ -129,7 +166,7 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p = (RemoteObjectRef) objConstructor
+			p =  objConstructor
 					.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
@@ -159,8 +196,8 @@ public class Registry {
 			e.printStackTrace();
 			
 		}
-		mp.put(line[0],p);
-		realmp.put(line[0], p.localize());
+		realmp.put(line[0],p);
+		mp.put(line[0],ror);
 		
 	}
 

@@ -55,14 +55,8 @@ public class RegistryService implements Runnable {
 				case LOOKUP:
 					handleLOOKUP(receiveMessage);
 					break;
-				case REBIND:
-					handleREBIND(receiveMessage);
-					break;
 				case LIST:
 					handleLIST(receiveMessage);
-					break;
-				case UNBIND:
-					handleUNBIND(receiveMessage);
 					break;
 				case INVOKEBYVAL:
 				case INVOKEBYREF:
@@ -83,8 +77,6 @@ public class RegistryService implements Runnable {
 	public int send(Message mes) throws IOException {
 		try
 		{
-			
-
 				objOutput.writeObject(mes);
 				objOutput.flush();
 			
@@ -93,16 +85,7 @@ public class RegistryService implements Runnable {
 			return 0;
 		}
 		return 1;
-	}
-
-	private void handleUNBIND(Message receiveMessage) {
-		String name= receiveMessage.getName();
-		if(Server.reg.mp.containsKey(name))
-			Server.reg.mp.remove(name);
-		if(Server.reg.mp.containsKey(name));
-		System.out.println("unbind "+name+" from registry!");
-	}
-
+	}	
 	private void handleLIST(Message receiveMessage) {
 		String ans="";
 		int i=1;
@@ -119,18 +102,13 @@ public class RegistryService implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-	private void handleREBIND(Message receiveMessage) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
 		String name= receiveMessage.getName();
 		if(Server.reg.mp.containsKey(name)){
 			
-		}
+		}else{
 			
+		}
 	}
 }

@@ -47,7 +47,8 @@ public class Server {
 			System.out.println("file list not found");
 			return;
 		}
-		reg = new Registry(registryPort);
+		String ipaddr=null;
+		reg = new Registry(registryPort,ipaddr);
 		if(reg==null){
 			System.out.println("bind registry port error");
 			System.exit(-1);
