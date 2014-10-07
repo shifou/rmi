@@ -103,7 +103,9 @@ public class Registry {
 		}
 		else{
 			System.out.println(name+" does not exist, will bind!");
-			bind(name);
+			ArrayList<String> hold= new ArrayList<String>();
+			hold.add(name);
+			bind(hold);
 		}
 	}
 	public void bind(ArrayList<String> serviceNames) {
@@ -154,51 +156,11 @@ public class Registry {
 		}
 	}
 
-	public void bind(String service) {
+	public void bind(String service,Object ob) {
 		RemoteObjectReference ror=null;
-		Object p =null;
-
-		String []line=null;
-		String hold=service;
-		try {
-			line= hold.split(" ");
-			String[] args = new String[line.length - 1];
-			for (int i = 1; i < line.length; i++) {
-				args[i - 1] = line[i];
-			}
-			Class<?> obj = Class.forName("application." + line[0]);
-			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p = (RemoteObjectReference) objConstructor.newInstance(new Object[] { args });
-		} catch (ClassNotFoundException e) {
-			System.out.println("no such class " + line[0]);
-			//continue;
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//continue;
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//continue;
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//continue;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//continue;
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//continue;
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
-		realmp.put(line[0],p);
-		mp.put(line[0],ror);
+		
+		realmp.put(service,ob);
+		mp.put(service,ror);
 		
 	}
 
