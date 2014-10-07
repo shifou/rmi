@@ -155,12 +155,9 @@ public class Registry {
 	}
 
 	public void bind(String service) {
-<<<<<<< HEAD
-		RemoteObjectRef ror=null;
+
+		RemoteObjectReference ror=null;
 		Object p =null;
-=======
-		RemoteObjectReference p =null;
->>>>>>> c43c85f9f0c8bee5bbc3d77afdab483c0ce592d5
 		String []line=null;
 		String hold=service;
 		try {
