@@ -43,12 +43,10 @@ public class Server {
 			while ((line = b.readLine()) != null) {
 				services.add(line);
 			}
-
 		} catch (Exception e) {
 			System.out.println("file list not found");
 			return;
 		}
-		
 		reg = new Registry(registryPort);
 		if(reg==null){
 			System.out.println("bind registry port error");
