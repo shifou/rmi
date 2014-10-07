@@ -12,5 +12,5 @@ public enum msgType {
 	LIST,
 	INVOKE,
 	REPLY,
-	ERROR
+	INVOKEERROR
 }

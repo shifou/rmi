@@ -102,12 +102,22 @@ public class RegistryService implements Runnable {
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
 		String name= receiveMessage.getName();
+		String ans="no such service!";
+		Message mes=null;
 		if(Server.reg.mp.containsKey(name)){
-			Message mes= new Message(Server.reg.mp.get(name),msgType.PASSREF);
+			mes= new Message(Server.reg.mp.get(name),msgType.PASSREF);
 		}else{
 			if(Server.reg.realmp.containsKey(name)){
-			Message mes= new Message(Server.reg.realmp.get(name),msgType.PASSVAL);
+			mes= new Message(Server.reg.realmp.get(name),msgType.PASSVAL);
+			}else{
+				mes= new Message(ans,msgType.LOOKUPFAIL);
 			}
+		}
+		try {
+			send(mes);
+		} catch (IOException e) {
+			System.out.println("send lookup error");
+			e.printStackTrace();
 		}
 	}
 }
