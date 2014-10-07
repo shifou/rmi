@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import data.Message;
 import ror.Remote440Exception;
 
 public class FibanacciCalc_Stub implements FibonacciCalc {
@@ -35,6 +36,10 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
+			Object[] args = new Object[1];
+			args[0] = n;
+			Message message = new Message(args, );
+			this.serverOut.writeObject(message);
 			
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
