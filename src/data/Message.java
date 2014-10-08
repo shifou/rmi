@@ -54,6 +54,10 @@ public class Message implements Serializable {
 	serviceName=serviceName2;
 	}
 
+	public Message(msgType list) {
+		type=list;
+	}
+
 	public msgType getResponType() {
 	
 		return this.type;

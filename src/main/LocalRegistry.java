@@ -62,7 +62,27 @@ public class LocalRegistry {
     	  return false;
       }
 }
-
+  public String list() throws IOException{
+	  Message msg = new Message( msgType.LIST);
+      Socket clientSocket = new Socket(this.ip, this.port);
+      ObjectOutputStream objOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+      objOutput.writeObject(msg);
+      objOutput.flush();
+      ObjectInputStream	objInput = new ObjectInputStream(clientSocket.getInputStream());
+      Message rep=null;
+	try {
+		rep = (Message) objInput.readObject();
+	} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "error when reading message";
+	}
+      objInput.close();
+      objOutput.close();
+      clientSocket.close();
+      return rep.getMeg();
+     
+  }
   public RemoteObjectReference lookup(String serviceName) throws Exception {
     try {
       Message msg = new Message( serviceName,msgType.LOOKUP);
