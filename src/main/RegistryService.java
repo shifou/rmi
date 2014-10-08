@@ -67,7 +67,7 @@ public class RegistryService implements Runnable {
 		}
 	}
 	private void handleINVOKE(Message receiveMessage) {
-		String name = receiveMessage.getName();
+		String name = receiveMessage.getObjectID();
 		String methodName = receiveMessage.getMethodName();
 		Object realObj = Server.reg.realmp.get(name);
 		Object[] args = receiveMessage.getArg();
@@ -201,7 +201,7 @@ public class RegistryService implements Runnable {
 
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
-		String name = receiveMessage.getName();
+		String name = receiveMessage.getObjectID();
 		String ans = "no such service!";
 		Message mes = null;
 		if (Server.reg.mp.containsKey(name)) {

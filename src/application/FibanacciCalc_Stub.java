@@ -40,14 +40,21 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
 			Object[] args = new Object[1];
-			args[0] = n; 
+			args[0] = new Integer(n); 
 			Message message = new Message(msgType.INVOKE,args, new String("nthFibonacci"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
 			
 			Message recvMessage = (Message)(this.serverIn.readObject());
-			result = (Integer)(recvMessage.getReturnVal());
 			toServer.close();
+			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+				throw new Remote440Exception("failed!");
+			}
+			else {
+				result = (Integer)(recvMessage.getReturnVal());
+			}
+			
+			
 			
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");

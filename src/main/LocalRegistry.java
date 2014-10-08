@@ -83,7 +83,7 @@ public class LocalRegistry {
   }
   public RemoteObjectReference lookup(String serviceName) throws Exception {
     try {
-      Message msg = new Message( serviceName,msgType.LOOKUP);
+      Message msg = new Message(msgType.LOOKUP, serviceName);
       Socket clientSocket = new Socket(this.ip, this.port);
       ObjectOutputStream objOutput = new ObjectOutputStream(clientSocket.getOutputStream());
       objOutput.writeObject(msg);
@@ -94,7 +94,7 @@ public class LocalRegistry {
       objOutput.close();
       clientSocket.close();
       if (rep.getResponType()==msgType.LOOKUPOK) {
-        RemoteObjectReference ror = (RemoteObjectReference)rep.getReturnVal();
+        RemoteObjectReference ror = rep.getROR();
         return ror;
       } else {
         throw new Remote440Exception("no such service!");

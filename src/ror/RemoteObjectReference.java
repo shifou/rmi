@@ -23,10 +23,10 @@ public class RemoteObjectReference implements Serializable  {
 	
 	public Object localize() {
 		
-		String stubName = this.remote_interface_name + "_Stub";
+		String stubName = "application." + this.remote_interface_name + "_Stub";
 		try {
 			Class<?> stub_class = Class.forName(stubName);
-			Constructor<?> objConstructor = stub_class.getConstructor(String.class, int.class);
+			Constructor<?> objConstructor = stub_class.getConstructor(String.class, int.class, String.class);
 			Object stub = objConstructor.newInstance(serverIP, serverPort, ID);
 			return stub;
 			
