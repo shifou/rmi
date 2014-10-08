@@ -46,7 +46,7 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 			this.serverOut.flush();
 			
 			Message recvMessage = (Message)(this.serverIn.readObject());
-			result = (int)(recvMessage.getReturnVal());
+			result = (Integer)(recvMessage.getReturnVal());
 			toServer.close();
 			
 		} catch (IOException e) {
