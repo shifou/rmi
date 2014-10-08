@@ -5,6 +5,8 @@ package data;
 
 public enum msgType {
 	REBIND,
+	REBINDOK,
+	REBINDERROR,
 	LOOKUP,
 	LOOKUPERROR,
 	LOOKUPOK,

@@ -48,6 +48,12 @@ public class Message implements Serializable {
 		returnVal=object;
 	}
 
+	public Message(String serviceName2, Object ob, msgType rebind) {
+	returnVal=ob;
+	type=rebind;
+	serviceName=serviceName2;
+	}
+
 	public msgType getResponType() {
 	
 		return this.type;
@@ -76,5 +82,9 @@ public class Message implements Serializable {
 	
 	public RemoteObjectReference getROR(){
 		return this.ref;
+	}
+
+	public String getMeg() {
+		return reply;
 	}
 }

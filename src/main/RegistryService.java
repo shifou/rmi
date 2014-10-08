@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ror.Remote440;
 import ror.RemoteObjectReference;
 import data.Message;
 import data.msgType;
@@ -63,17 +65,15 @@ public class RegistryService implements Runnable {
 				continue;
 			}
 		}
-
 	}
-
 	private void handleINVOKE(Message receiveMessage) {
 		String name = receiveMessage.getName();
 		String methodName = receiveMessage.getMethodName();
 		Object realObj = Server.reg.realmp.get(name);
 		Object[] args = receiveMessage.getArg();
 		Method method = null;
-		String msg = null;
-		boolean run = true;
+		String msg=null;
+		boolean run=true;
 		if (args != null) {
 			Class[] types = new Class[args.length];
 			for (int i = 0; i < types.length; i++) {
@@ -84,8 +84,8 @@ public class RegistryService implements Runnable {
 								.forName(((RemoteObjectReference) args[i])
 										.getClassName());
 					} catch (ClassNotFoundException e) {
-						run = false;
-						msg = e.getMessage();
+						run=false;
+						msg=e.getMessage();
 						System.out.println("not found the class");
 						e.printStackTrace();
 					}
@@ -99,59 +99,62 @@ public class RegistryService implements Runnable {
 				method = realObj.getClass().getMethod(methodName, types);
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
-				run = false;
-				msg = e.getMessage();
+				run=false;
+				msg=e.getMessage();
 				e.printStackTrace();
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
-				run = false;
-				msg = e.getMessage();
+				run=false;
+				msg=e.getMessage();
 				e.printStackTrace();
 			}
-		} else {
+		} else { 
 			// null Argument
 			try {
 				method = realObj.getClass().getMethod(methodName,
 						(Class[]) null);
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
-				run = false;
-				msg = e.getMessage();
+				run=false;
+				msg=e.getMessage();
 				e.printStackTrace();
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
-				run = false;
-				msg = e.getMessage();
+				run=false;
+				msg=e.getMessage();
 				e.printStackTrace();
 			}
 		}
-		Object returnVal = null;
+		Object returnVal=null;
 		try {
 			returnVal = method.invoke(realObj, args);
 		} catch (IllegalAccessException e) {
-			run = false;
-			msg = e.getMessage();
+			run=false;
+			msg=e.getMessage();
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			run = false;
-			msg = e.getMessage();
+			run=false;
+			msg=e.getMessage();
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			run = false;
-			msg = e.getMessage();
+			run=false;
+			msg=e.getMessage();
 			e.printStackTrace();
 		}
-		Object ans = null;
+		Object ans=null;
 		try {
-			ans = checkRet(returnVal);
-		} catch (Exception e) {
-
+		ans= checkRet(returnVal);
+       }catch(Exception e){
+			run=false;
+			msg=e.getMessage();
+			e.printStackTrace();
 		}
-		Message mes = null;
-		if (run) {
-			mes = new Message(ans, msgType.INVOKEOK);
-		} else {
-			mes = new Message(msg, msgType.INVOKEERROR);
+		 Message mes = null;
+		if(run){
+			 mes = new Message(ans,msgType.INVOKEOK);
+		}
+		else{
+			 mes = new Message(msg,msgType.INVOKEERROR);
 		}
 		try {
 			send(mes);
@@ -159,12 +162,14 @@ public class RegistryService implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+}
 
-	}
-
-	private Object checkRet(Object returnVal) throws NotSerializableException {
-		// TODO Auto-generated method stub
-		return null;
+	private Object checkRet(Object obj) throws NotSerializableException {
+		Object ret=obj;
+		if ( (obj != null) && !(obj instanceof Serializable) ) {
+			throw new NotSerializableException("Non-serializable return object");
+		}
+		return ret;	
 	}
 
 	public int send(Message mes) throws IOException {
