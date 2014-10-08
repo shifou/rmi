@@ -34,5 +34,9 @@ public class RemoteObjectReference implements Serializable  {
 		}
 		
 	}
+
+	public String getClassName() {
+		return this.remote_interface_name;
+	}
 	
 }

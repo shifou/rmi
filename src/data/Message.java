@@ -1,6 +1,8 @@
 package data;
 import java.io.Serializable;
 
+import ror.RemoteObjectReference;
+
 
 
 public class Message implements Serializable {
@@ -8,9 +10,11 @@ public class Message implements Serializable {
 
 	private static final long serialVersionUID = -3134382594687183495L;
 	
-	
+	RemoteObjectReference ref;
+	String serviceName;
 	msgType type;
 	Object[] methodArgs;
+	Object realob;
 	String methodName; 
 	String reply;
 	Object returnVal;
@@ -27,6 +31,17 @@ public class Message implements Serializable {
 		this.methodName = name;
 	}
 	
+	public Message(RemoteObjectReference ror, msgType passref) {
+		type=passref;
+		ref=ror;
+		
+	}
+
+	public Message(Object object, msgType passval) {
+		type=passval;
+		realob=object;
+	}
+
 	public msgType getResponType() {
 	
 		return this.type;
@@ -34,6 +49,15 @@ public class Message implements Serializable {
 	public String getMethodName() {
 	
 		return methodName;
+	}
+
+	public String getName() {
+		return serviceName;
+	}
+
+	public Object[] getArg() {
+		// TODO Auto-generated method stub
+		return methodArgs;
 	}
 	
 }
