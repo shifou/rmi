@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ror.*;
-import data.Message;
-import data.msgType;
+
 
 public class Registry {
 
@@ -76,7 +75,7 @@ public class Registry {
 	public void stop() {
 		running = false;
 	}
-	private void unbind(String name) {
+	public void unbind(String name) {
 		boolean check1=false;
 		if(Server.reg.mp.containsKey(name)){
 			Server.reg.mp.remove(name);

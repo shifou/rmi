@@ -8,9 +8,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import data.Message;
+
 import data.msgType;
-import ror.Remote440;
 import ror.Remote440Exception;
 import ror.RemoteObjectReference;
 
@@ -73,9 +72,8 @@ public class LocalRegistry {
 	try {
 		rep = (Message) objInput.readObject();
 	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
+
 		e.printStackTrace();
-		return "error when reading message";
 	}
       objInput.close();
       objOutput.close();
