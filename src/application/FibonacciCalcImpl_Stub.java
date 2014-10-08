@@ -31,7 +31,7 @@ public class FibonacciCalcImpl_Stub implements FibonacciCalc {
 	}
 	
 	@Override
-	public int nthFibonacci(int n) throws Remote440Exception {
+	public int nthFibonacci(Integer n) throws Remote440Exception {
 		int result = -1;
 		try {
 			Socket toServer = new Socket(this.serverIP, this.serverPort);

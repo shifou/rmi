@@ -15,7 +15,7 @@ public class FibonacciClient {
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference ror = reg.lookup("fibonacci1");
 			FibonacciCalc fib = (FibonacciCalc)ror.localize();
-			System.out.println(fib.nthFibonacci(5));
+			System.out.println(fib.nthFibonacci(6));
 		}
 		catch (UnknownHostException e){
 			

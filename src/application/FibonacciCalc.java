@@ -5,6 +5,6 @@ import ror.Remote440Exception;
 
 public interface FibonacciCalc extends Remote440 {
 
-	public int nthFibonacci(int n) throws Remote440Exception;
+	public int nthFibonacci(Integer n) throws Remote440Exception;
 	
 }

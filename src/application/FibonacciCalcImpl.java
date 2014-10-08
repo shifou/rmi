@@ -5,7 +5,7 @@ import ror.Remote440Exception;
 public class FibonacciCalcImpl implements FibonacciCalc {
 
 	@Override
-	public int nthFibonacci(int n) throws Remote440Exception {
+	public int nthFibonacci(Integer n) throws Remote440Exception {
 		if (n == 0){
 			return 0;
 		}
