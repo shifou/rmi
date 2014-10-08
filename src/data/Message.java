@@ -38,6 +38,11 @@ public class Message implements Serializable {
 		ref=ror;
 		
 	}
+	
+	public Message(msgType type, String objID){
+		this.objectID = objID;
+		this.type = type;
+	}
 
 	public Message(Object object, msgType passval) {
 		type=passval;
@@ -70,4 +75,7 @@ public class Message implements Serializable {
 		return this.objectID;
 	}
 	
+	public RemoteObjectReference getROR(){
+		return this.ref;
+	}
 }
