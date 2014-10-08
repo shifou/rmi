@@ -120,8 +120,18 @@ public class Registry {
 				args[i - 1] = line[i];
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
-			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p =  objConstructor.newInstance(new Object[] { args });
+			Constructor<?> objConstructor = null;
+			if(line.length>2){
+				objConstructor = obj.getConstructor(String[].class);
+				p = objConstructor.newInstance(new Object[]{args});
+			}
+				
+			else {
+				objConstructor = obj.getConstructor();
+				p =  objConstructor.newInstance();
+			}
+				
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
 			continue;
@@ -150,9 +160,9 @@ public class Registry {
 			e.printStackTrace();
 			continue;
 		}
-		realmp.put(line[0],p);
+		realmp.put(line[1],p);
 		ror =new RemoteObjectReference(this.ipaddr,port,line[0],line[1]);
-		mp.put(line[0],ror);
+		mp.put(line[1],ror);
 		}
 	}
 

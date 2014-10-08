@@ -11,7 +11,7 @@ import data.Message;
 import data.msgType;
 import ror.Remote440Exception;
 
-public class FibanacciCalc_Stub implements FibonacciCalc {
+public class FibonacciCalcImpl_Stub implements FibonacciCalc {
 
 	private int serverPort;
 	private InetAddress serverIP;
@@ -19,7 +19,7 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 	private ObjectOutputStream serverOut;
 	private String identifier;
 	
-	public FibanacciCalc_Stub(String IP, int port, String identifier){
+	public FibonacciCalcImpl_Stub(String IP, int port, String identifier){
 		this.serverPort = port;
 		this.identifier = identifier;
 		try {
@@ -40,7 +40,7 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
 			Object[] args = new Object[1];
-			args[0] = new Integer(n); 
+			args[0] = n; 
 			Message message = new Message(msgType.INVOKE,args, new String("nthFibonacci"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();

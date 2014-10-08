@@ -202,9 +202,11 @@ public class RegistryService implements Runnable {
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
 		String name = receiveMessage.getObjectID();
-		String ans = "no such service!";
+		System.out.println(name);
+		String ans = "no such service! ";
 		Message mes = null;
 		if (Server.reg.mp.containsKey(name)) {
+			System.out.println("It contains!");
 			mes = new Message(Server.reg.mp.get(name), msgType.LOOKUPOK);
 		} else {
 			ans = "no corresponding ROR found!";
