@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import data.Message;
+import data.msgType;
 import ror.Remote440Exception;
 
 public class FibanacciCalc_Stub implements FibonacciCalc {
@@ -16,9 +17,11 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 	private InetAddress serverIP;
 	private ObjectInputStream serverIn;
 	private ObjectOutputStream serverOut;
+	private String identifier;
 	
-	public FibanacciCalc_Stub(String IP, int port){
+	public FibanacciCalc_Stub(String IP, int port, String identifier){
 		this.serverPort = port;
+		this.identifier = identifier;
 		try {
 			this.serverIP = InetAddress.getByName(IP);
 		} catch (UnknownHostException e) {
@@ -37,11 +40,19 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
 			Object[] args = new Object[1];
-			args[0] = n;
-			Message message = new Message(args, );
+			args[0] = new Integer(n); // WATCH OUT
+			Message message = new Message(msgType.INVOKE,args, new String("nthFibonacci"), new String(this.identifier));
 			this.serverOut.writeObject(message);
+			this.serverOut.flush();
+			
+			Message recvMessage = (Message)(this.serverIn.readObject());
+			result = (int)(recvMessage.getReturnVal());
+			toServer.close();
 			
 		} catch (IOException e) {
+			throw new Remote440Exception("Failed!");
+		}
+		catch (ClassNotFoundException e){
 			throw new Remote440Exception("Failed!");
 		}
 		return result;

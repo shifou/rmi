@@ -18,6 +18,7 @@ public class Message implements Serializable {
 	String methodName; 
 	String reply;
 	Object returnVal;
+	String objectID;
 	
 	
 	public Message(String ans, msgType type) {
@@ -25,10 +26,11 @@ public class Message implements Serializable {
 		this.type = type;
 	}
 	
-	public Message(msgType type, Object[] args, String name){
+	public Message(msgType type, Object[] args, String name, String objectID){
 		this.methodArgs = args;
 		this.type = type;
 		this.methodName = name;
+		this.objectID = objectID;
 	}
 	
 	public Message(RemoteObjectReference ror, msgType passref) {
@@ -56,8 +58,16 @@ public class Message implements Serializable {
 	}
 
 	public Object[] getArg() {
-		// TODO Auto-generated method stub
+		
 		return methodArgs;
+	}
+	
+	public Object getReturnVal(){
+		return this.returnVal;
+	}
+	
+	public String getObjectID(){
+		return this.objectID;
 	}
 	
 }

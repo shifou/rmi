@@ -11,12 +11,14 @@ public class RemoteObjectReference implements Serializable  {
 	private int serverPort;
 	private String serverIP;
 	private String remote_interface_name;
+	private String ID;
 	
-	public RemoteObjectReference(String IP, int port, String r_i_name) {
+	public RemoteObjectReference(String IP, int port, String r_i_name, String ID) {
 		
 		this.serverPort = port;
 		this.serverIP = IP;
 		this.remote_interface_name = r_i_name;
+		this.ID = ID;
 	}
 	
 	public Object localize() {
@@ -25,7 +27,7 @@ public class RemoteObjectReference implements Serializable  {
 		try {
 			Class<?> stub_class = Class.forName(stubName);
 			Constructor<?> objConstructor = stub_class.getConstructor(String.class, int.class);
-			Object stub = objConstructor.newInstance(serverIP, serverPort);
+			Object stub = objConstructor.newInstance(serverIP, serverPort, ID);
 			return stub;
 			
 		} catch (Exception e) {
@@ -37,6 +39,10 @@ public class RemoteObjectReference implements Serializable  {
 
 	public String getClassName() {
 		return this.remote_interface_name;
+	}
+	
+	public String getID(){
+		return this.ID;
 	}
 	
 }
