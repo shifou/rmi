@@ -40,7 +40,7 @@ public class FibanacciCalc_Stub implements FibonacciCalc {
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
 			Object[] args = new Object[1];
-			args[0] = n; // WATCH OUT
+			args[0] = n; 
 			Message message = new Message(msgType.INVOKE,args, new String("nthFibonacci"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();

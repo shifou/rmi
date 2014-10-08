@@ -15,12 +15,17 @@ import ror.Remote440Exception;
 import ror.RemoteObjectReference;
 
 public class LocalRegistry {
-  private String ip;
+  private InetAddress ip;
   private int port;
 
   public LocalRegistry(String ip, int port) {
-    this.ip = ip;
-    this.port = port;
+    try {
+		this.ip = InetAddress.getByName(ip);
+		this.port = port;
+	} catch (UnknownHostException e) {
+		e.printStackTrace();
+	}
+    
   }
 
   public boolean rebind(String serviceName, Object ob) throws IOException{
@@ -32,7 +37,7 @@ public class LocalRegistry {
 	} catch (UnknownHostException e) {
 		e.printStackTrace();
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	}
       ObjectOutputStream objOutput = new ObjectOutputStream(socket.getOutputStream());
@@ -43,7 +48,7 @@ public class LocalRegistry {
 	try {
 		rep = (Message)in.readObject();
 	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	}
       objOutput.close();
@@ -58,7 +63,7 @@ public class LocalRegistry {
       }
 }
 
-  public Remote440 lookup(String serviceName) throws Exception {
+  public RemoteObjectReference lookup(String serviceName) throws Exception {
     try {
       Message msg = new Message( serviceName,msgType.LOOKUP);
       Socket clientSocket = new Socket(this.ip, this.port);
@@ -72,7 +77,7 @@ public class LocalRegistry {
       clientSocket.close();
       if (rep.getResponType()==msgType.LOOKUPOK) {
         RemoteObjectReference ror = (RemoteObjectReference)rep.getReturnVal();
-        return (Remote440)ror.localize();
+        return ror;
       } else {
         throw new Remote440Exception("no such service!");
       }
