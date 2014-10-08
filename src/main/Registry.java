@@ -18,13 +18,15 @@ public class Registry {
 	public ConcurrentHashMap<String, Object> realmp;
 	public ServerSocket listenSocket;
 	public String ipaddr;
+	public int port;
 	public int requestId;
 	private boolean running;
 
-	public Registry(int registryPort,String ip) {
+	public Registry(int registryPort) {
 		try {
-			ipaddr=ip;
+			port=registryPort;
 			listenSocket = new ServerSocket((short) registryPort);
+			ipaddr=listenSocket.getInetAddress().getHostAddress();
 			mp = new ConcurrentHashMap<String, RemoteObjectReference>();
 			realmp = new ConcurrentHashMap<String, Object>();
 			System.out.println("Registry start listen at: " + registryPort);
@@ -95,7 +97,6 @@ public class Registry {
 			check1=true;
 		}else{
 			Server.reg.realmp.put(name,ob);
-			
 		}
 		if(check1)
 		{
@@ -121,8 +122,7 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName("application." + line[0]);
 			Constructor<?> objConstructor = obj.getConstructor(String[].class);
-			p = (RemoteObjectReference) objConstructor
-					.newInstance(new Object[] { args });
+			p =  objConstructor.newInstance(new Object[] { args });
 		} catch (ClassNotFoundException e) {
 			System.out.println("no such class " + line[0]);
 			continue;
@@ -152,15 +152,15 @@ public class Registry {
 			continue;
 		}
 		realmp.put(line[0],p);
+		ror =new RemoteObjectReference(this.ipaddr,port,line[0],line[1]);
 		mp.put(line[0],ror);
 		}
 	}
 
-	public void bind(String service,Object ob) {
-		RemoteObjectReference ror=null;
-		
-		realmp.put(service,ob);
-		mp.put(service,ror);
+	public void bind(String ident,Object ob) {
+		RemoteObjectReference ror= new RemoteObjectReference(this.ipaddr,port,ob.getClass().getName(),ident);
+		realmp.put(ident,ob);
+		mp.put(ident,ror);
 
 		
 	}

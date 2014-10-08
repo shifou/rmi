@@ -14,7 +14,6 @@ public class Message implements Serializable {
 	String serviceName;
 	msgType type;
 	Object[] methodArgs;
-	Object realob;
 	String methodName; 
 	String reply;
 	Object returnVal;
@@ -39,9 +38,9 @@ public class Message implements Serializable {
 		
 	}
 
-	public Message(Object object, msgType passval) {
-		type=passval;
-		realob=object;
+	public Message(Object object, msgType val) {
+		type=val;
+		returnVal=object;
 	}
 
 	public msgType getResponType() {
