@@ -1,8 +1,9 @@
-package application;
+package test;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import application.FibonacciCalc;
 import main.LocalRegistry;
 import ror.Remote440Exception;
 import ror.RemoteObjectReference;
