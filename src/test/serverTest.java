@@ -20,6 +20,7 @@ public class serverTest{
 		reg.bind("tracker1", t);
 		System.out.println(reg.list());
 		System.out.println("----");
+		// bind testname
 		System.out.println(reg.bind("testname",fib));
 		System.out.println("----");
 		System.out.println(reg.list());
@@ -27,10 +28,12 @@ public class serverTest{
 		System.out.println("----");
 		System.out.println(reg.list());
 		System.out.println("----");
+		// rebind twice
 		System.out.println(reg.rebind("testname", (Object)fib));
 		System.out.println(reg.rebind("testname", (Object)fib));
 		System.out.println(reg.list());
 		System.out.println("----");
+		// unbind test which does not exist in the server
 		System.out.println(reg.unbind("test"));
 		System.out.println(reg.unbind("testname"));
 		System.out.println(reg.list());

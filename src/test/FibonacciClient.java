@@ -17,6 +17,7 @@ public class FibonacciClient {
 			return;
 		}
 		try {
+			// trying to calculate the 6th of Fibonacci array
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference ror = reg.lookup("fibonacci1");
 			FibonacciCalc fib = (FibonacciCalc)ror.localize();

@@ -16,6 +16,7 @@ public class StringConcatClient {
 			return;
 		}
 		try {
+			// concat 2 string 
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference ror = reg.lookup("stringconcat1");
 			StringConcat scon = (StringConcat)ror.localize();

@@ -19,12 +19,15 @@ public class TrackerClient {
 		try {
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference ror = reg.lookup("tracker1");
+			// creating 3 clients
 			Tracker tc1 = (Tracker)ror.localize();
 			Tracker tc2 = (Tracker)ror.localize();
 			Tracker tc3 = (Tracker)ror.localize();
+			// initial variable should be server
 			System.out.println("Initial name: "+tc1.getLastVisitorName());
 			System.out.println("Intital current visitors: " + tc1.getCurrentVisitors());
 			System.out.println("Intital total visitors: " + tc1.getTotalVisited());
+			// login will increase the visitor count
 			tc1.login();
 			tc2.login();
 			System.out.println("Current visitors: " + tc1.getCurrentVisitors());
@@ -32,14 +35,15 @@ public class TrackerClient {
 			tc3.login();
 			System.out.println("Current visitors: " + tc1.getCurrentVisitors());
 			System.out.println("Total visitors: " + tc3.getTotalVisited());
+			//login will decrease the current visitor count
 			tc2.logout();
+			// update the visitor name
 			tc1.setVisitorName(new String("TC 1"));
 			System.out.println("Current visitors: " + tc1.getCurrentVisitors());
 			System.out.println("Total visitors: " + tc3.getTotalVisited());
 			System.out.println("Current name: " + tc3.getLastVisitorName());
 			tc1.logout();
 			tc3.logout();
-			
 		}
 		catch (UnknownHostException e){
 			
