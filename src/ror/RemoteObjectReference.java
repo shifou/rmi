@@ -6,7 +6,7 @@ import java.lang.reflect.Constructor;
 
 
 
-public class RemoteObjectReference implements Serializable  {
+public class RemoteObjectReference implements Serializable, Remote440  {
 
 	private static final long serialVersionUID = -8158949034952976025L;
 	private int serverPort;

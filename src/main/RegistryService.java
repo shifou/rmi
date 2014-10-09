@@ -180,7 +180,8 @@ public class RegistryService implements Runnable {
 					run=false;
 					break;
 				}
-				if (args[i] instanceof RemoteObjectReference) {
+				if (args[i] instanceof Remote440) {
+					/*
 					Class className = null;
 					try {
 						className = Class
@@ -192,8 +193,9 @@ public class RegistryService implements Runnable {
 						System.out.println("not found the class");
 						e.printStackTrace();
 						break;
-					}
-					types[i] = (className.getInterfaces())[0];
+					}*/
+					types[i] = Remote440.class;
+					
 					String id=((RemoteObjectReference) args[i]).getID();
 					if(Server.reg.realmp.containsKey(id))
 					{
@@ -208,6 +210,7 @@ public class RegistryService implements Runnable {
 				} else {
 					types[i] = args[i].getClass();
 				}
+				System.out.println(types[i]+"---");
 			}
 			if(run==false){
 				 mes = new Message(msg,msgType.INVOKEERROR);

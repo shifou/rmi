@@ -14,7 +14,7 @@ import ror.Remote440Exception;
 public class TrackerImpl_Stub implements Tracker {
 	
 
-	private static final long serialVersionUID = 4901917151486110896L;
+
 	private int serverPort;
 	private InetAddress serverIP;
 	private ObjectInputStream serverIn;
@@ -208,8 +208,6 @@ public class TrackerImpl_Stub implements Tracker {
 		return result;
 	}
 	
-	public String getIdentifier(){
-		return this.identifier;
-	}
+
 
 }
