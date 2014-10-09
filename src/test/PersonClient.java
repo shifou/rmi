@@ -17,11 +17,14 @@ public class PersonClient {
 			return;
 		}
 		try {
+			
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference sc = reg.lookup("stringconcat1");
 			RemoteObjectReference fib = reg.lookup("fibonacci1");
 			RemoteObjectReference person = reg.lookup("person1");
 			Person p = (Person)person.localize();
+			// take 2 ror and 2 string and number
+			// 2 string will be args for the stringconcat while number will be args for Fibonacci
 			System.out.println(p.create(fib, sc, "Lixun", " Mao", 10));
 		}
 		catch (UnknownHostException e){
