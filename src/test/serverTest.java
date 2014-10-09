@@ -12,10 +12,10 @@ public class serverTest{
 		LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 		FibonacciCalcImpl fib= new FibonacciCalcImpl();
 		TrackerImpl t = new TrackerImpl("Server");
-		reg.bind("tracker1", (Object)t);
+		reg.bind("tracker1", t);
 		System.out.println(reg.list());
 		System.out.println("----");
-		System.out.println(reg.bind("testname", (Object)fib));
+		System.out.println(reg.bind("testname",fib));
 		System.out.println("----");
 		System.out.println(reg.list());
 		System.out.println(reg.unbind("testname"));

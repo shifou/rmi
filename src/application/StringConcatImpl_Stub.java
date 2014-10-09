@@ -13,6 +13,8 @@ import ror.Remote440Exception;
 
 public class StringConcatImpl_Stub implements StringConcat {
 
+
+	private static final long serialVersionUID = 2035327909724460296L;
 	private int serverPort;
 	private InetAddress serverIP;
 	private ObjectInputStream serverIn;
@@ -64,6 +66,10 @@ public class StringConcatImpl_Stub implements StringConcat {
 			throw new Remote440Exception("Failed!");
 		}
 		return result;
+	}
+	
+	public String getIdentifier(){
+		return this.identifier;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import data.msgType;
+import ror.Remote440;
 import ror.Remote440Exception;
 import ror.RemoteObjectReference;
 
@@ -136,7 +137,7 @@ public String unbind(String serviceName) throws IOException {
       return rep.getMeg();
 }
 
-public String bind(String string, Object ob) throws IOException {
+public String bind(String string, Remote440 ob) throws IOException {
 	 Message msg = new Message(string,ob,msgType.BIND);
      Socket socket=null;
 	try {

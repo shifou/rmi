@@ -13,6 +13,8 @@ import ror.Remote440Exception;
 
 public class FibonacciCalcImpl_Stub implements FibonacciCalc {
 
+
+	private static final long serialVersionUID = 8896767186516725742L;
 	private int serverPort;
 	private InetAddress serverIP;
 	private ObjectInputStream serverIn;
@@ -63,6 +65,10 @@ public class FibonacciCalcImpl_Stub implements FibonacciCalc {
 			throw new Remote440Exception("Failed!");
 		}
 		return result;
+	}
+	
+	public String getIdentifier(){
+		return this.identifier;
 	}
 
 }

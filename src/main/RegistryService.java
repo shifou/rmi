@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+
+import ror.Remote440;
 import ror.RemoteObjectReference;
 import data.Message;
 import data.msgType;
@@ -178,11 +180,11 @@ public class RegistryService implements Runnable {
 					run=false;
 					break;
 				}
-				if (args[i] instanceof RemoteObjectReference) {
+				if (args[i] instanceof Remote440) {
 					Class className = null;
 					try {
 						className = Class
-								.forName(((RemoteObjectReference) args[i])
+								.forName(((Remote440) args[i])
 										.getClassName());
 					} catch (ClassNotFoundException e) {
 						run=false;
