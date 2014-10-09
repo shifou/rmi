@@ -68,4 +68,5 @@ public class StringConcatImpl_Stub implements StringConcat {
 	}
 
 
+
 }
