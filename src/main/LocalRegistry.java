@@ -137,7 +137,7 @@ public String unbind(String serviceName) throws IOException {
 }
 
 public String bind(String string, Object ob) throws IOException {
-	 Message msg = new Message(ob,msgType.BIND);
+	 Message msg = new Message(string,ob,msgType.BIND);
      Socket socket=null;
 	try {
 		socket = new Socket(this.ip, this.port);

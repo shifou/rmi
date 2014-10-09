@@ -124,7 +124,7 @@ public class RegistryService implements Runnable {
 		}
 		else{
 		Server.reg.realmp.put(ident,ob);
-		Server.reg.realmp.put(ident,ror);
+		Server.reg.mp.put(ident,ror);
 		ans="bind service successfully!";
 		mes = new Message(ans,msgType.BINDOK);
 		}
@@ -311,6 +311,7 @@ public class RegistryService implements Runnable {
 		int i = 1;
 		for (String each : Server.reg.mp.keySet()) {
 			ans += (i + ":\t" + each + "\n");
+			i++;
 		}
 		if (ans.equals(""))
 			ans = "no service available right now!";

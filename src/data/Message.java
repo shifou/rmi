@@ -11,7 +11,6 @@ public class Message implements Serializable {
 	private static final long serialVersionUID = -3134382594687183495L;
 	
 	RemoteObjectReference ref;
-	String serviceName;
 	msgType type;
 	Object[] methodArgs;
 	String methodName; 
@@ -50,7 +49,7 @@ public class Message implements Serializable {
 	public Message(String serviceName2, Object ob, msgType rebind) {
 	returnVal=ob;
 	type=rebind;
-	serviceName=serviceName2;
+	objectID=serviceName2;
 	}
 
 	public Message(msgType list) {
@@ -66,9 +65,6 @@ public class Message implements Serializable {
 		return methodName;
 	}
 
-	public String getName() {
-		return serviceName;
-	}
 
 	public Object[] getArg() {
 		

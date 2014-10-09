@@ -12,12 +12,18 @@ public class serverTest{
 		LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 		FibonacciCalcImpl fib= new FibonacciCalcImpl();
 		System.out.println(reg.list());
+		System.out.println("----");
 		System.out.println(reg.bind("testname", (Object)fib));
-		System.out.println(reg.unbind("testname"));
+		System.out.println("----");
 		System.out.println(reg.list());
-		
+		System.out.println(reg.unbind("testname"));
+		System.out.println("----");
+		System.out.println(reg.list());
+		System.out.println("----");
+		System.out.println(reg.rebind("testname", (Object)fib));
 		System.out.println(reg.rebind("testname", (Object)fib));
 		System.out.println(reg.list());
+		System.out.println("----");
 		System.out.println(reg.unbind("test"));
 		System.out.println(reg.unbind("testname"));
 		System.out.println(reg.list());
