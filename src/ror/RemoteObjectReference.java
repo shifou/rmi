@@ -25,7 +25,7 @@ public class RemoteObjectReference implements Serializable, Remote440  {
 	public Object localize() {
 		
 		String stubName = this.class_name + "_Stub";
-		System.out.println(stubName);
+		//System.out.println(stubName);
 		try {
 			Class<?> stub_class = Class.forName(stubName);
 			Constructor<?> objConstructor = stub_class.getConstructor(String.class, int.class, String.class);
