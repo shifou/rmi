@@ -10,6 +10,10 @@ import ror.RemoteObjectReference;
 public class StringConcatClient {
 
 	public static void main(String[] args){
+		if(args.length!=2){
+			System.out.format("Usage: ./server <registryIp> <registryPort>");
+			return;
+		}
 		try {
 			LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 			RemoteObjectReference ror = reg.lookup("stringconcat1");

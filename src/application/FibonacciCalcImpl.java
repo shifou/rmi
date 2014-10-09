@@ -1,8 +1,14 @@
 package application;
 
+
+import java.io.Serializable;
+
 import ror.Remote440Exception;
 
-public class FibonacciCalcImpl implements FibonacciCalc {
+public class FibonacciCalcImpl implements FibonacciCalc, Serializable{
+
+
+	private static final long serialVersionUID = 7772266491896322433L;
 
 	@Override
 	public int nthFibonacci(Integer n) throws Remote440Exception {
