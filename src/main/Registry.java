@@ -79,6 +79,7 @@ public class Registry {
 		boolean check1=false;
 		if(Server.reg.mp.containsKey(name)){
 			Server.reg.mp.remove(name);
+			Server.reg.realmp.remove(name);
 			check1=true;
 		}
 		if(check1)
@@ -86,7 +87,7 @@ public class Registry {
 			System.out.println("unbind "+name+" from registry!");
 		}
 		else{
-			System.out.println("unbind "+name+" from registry error!");
+			System.out.println("no such service unbind "+name+" from registry error!");
 			}
 	}
 	public void rebind(String name, Object ob) {
@@ -103,9 +104,8 @@ public class Registry {
 		}
 		else{
 			System.out.println(name+" does not exist, will bind!");
-			ArrayList<String> hold= new ArrayList<String>();
-			hold.add(name);
-			bind(hold);
+			
+			bind(name,ob);
 		}
 	}
 	public void bind(ArrayList<String> serviceNames) {
@@ -168,6 +168,10 @@ public class Registry {
 
 	public void bind(String ident,Object ob) {
 		RemoteObjectReference ror= new RemoteObjectReference(this.ipaddr,port,ob.getClass().getName(),ident);
+		if(realmp.containsKey(ident)){
+			System.out.println("already has this service, try using rebind");
+			return;
+		}
 		realmp.put(ident,ob);
 		mp.put(ident,ror);
 

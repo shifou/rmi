@@ -42,13 +42,16 @@ public class RegistryService implements Runnable {
 				receiveMessage = (Message) objInput.readObject();
 			} catch (ClassNotFoundException e) {
 				// System.out.println("read disconnected message");
-				continue;
+				running = false;
+				break;
 			} catch (EOFException e) {
 				// System.out.println("detect disconnected message");
 				running = false;
+				break;
 			} catch (Exception e) {
 				// System.out.println("-----");
-				continue;
+				running = false;
+				break;
 			}
 			switch (receiveMessage.getResponType()) {
 			case LOOKUP:
@@ -61,7 +64,7 @@ public class RegistryService implements Runnable {
 				handleINVOKE(receiveMessage);
 				break;
 			default:
-				System.out.println("receive messgae error");
+				System.out.println("receive messgae type error");
 				continue;
 			}
 		}
@@ -73,10 +76,17 @@ public class RegistryService implements Runnable {
 		Object[] args = receiveMessage.getArg();
 		Method method = null;
 		String msg=null;
+		Message mes = null;
 		boolean run=true;
 		if (args != null) {
 			Class[] types = new Class[args.length];
 			for (int i = 0; i < types.length; i++) {
+				if(args[i]==null || !(args[i] instanceof Serializable)){
+					System.out.println("no serializable args or args is null");
+					msg="no serializable args or args is null";
+					run=false;
+					break;
+				}
 				if (args[i] instanceof RemoteObjectReference) {
 					Class className = null;
 					try {
@@ -88,13 +98,36 @@ public class RegistryService implements Runnable {
 						msg=e.getMessage();
 						System.out.println("not found the class");
 						e.printStackTrace();
+						break;
 					}
 					types[i] = (className.getInterfaces())[0];
-					args[i] = ((RemoteObjectReference) args[i]).localize();
+					String id=((RemoteObjectReference) args[i]).getID();
+					if(Server.reg.realmp.containsKey(id))
+					{
+						args[i] =  Server.reg.realmp.get(id);
+					}
+					else{
+						System.out.println("can not find the ror object in the server");
+						msg="ror service object not available right now";
+						run=false;
+						break;
+					}
 				} else {
 					types[i] = args[i].getClass();
 				}
 			}
+			if(run==false){
+				 mes = new Message(msg,msgType.INVOKEERROR);
+				 try {
+						send(mes);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					
+					}
+				 return;
+			}
+			
 			try {
 				method = realObj.getClass().getMethod(methodName, types);
 			} catch (NoSuchMethodException e) {
@@ -108,7 +141,8 @@ public class RegistryService implements Runnable {
 				msg=e.getMessage();
 				e.printStackTrace();
 			}
-		} else { 
+		} 
+		else { 
 			// null Argument
 			try {
 				method = realObj.getClass().getMethod(methodName,
@@ -149,7 +183,7 @@ public class RegistryService implements Runnable {
 			msg=e.getMessage();
 			e.printStackTrace();
 		}
-		 Message mes = null;
+		 
 		if(run){
 			 mes = new Message(ans,msgType.INVOKEOK);
 		}

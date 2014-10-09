@@ -19,7 +19,6 @@ public class Message implements Serializable {
 	Object returnVal;
 	String objectID;
 	
-	
 	public Message(String ans, msgType type) {
 		reply= ans;
 		this.type = type;
