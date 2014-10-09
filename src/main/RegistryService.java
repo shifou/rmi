@@ -180,11 +180,11 @@ public class RegistryService implements Runnable {
 					run=false;
 					break;
 				}
-				if (args[i] instanceof Remote440) {
+				if (args[i] instanceof RemoteObjectReference) {
 					Class className = null;
 					try {
 						className = Class
-								.forName(((Remote440) args[i])
+								.forName(((RemoteObjectReference) args[i])
 										.getClassName());
 					} catch (ClassNotFoundException e) {
 						run=false;
