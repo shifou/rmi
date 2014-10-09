@@ -1,5 +1,5 @@
-FibonacciCalcImpl fibonacci1
-StringConcatImpl stringconcat1
+application.FibonacciCalcImpl fibonacci1
+application.StringConcatImpl stringconcat1
 
 // class string id
 // concat string of 2 objects add 2 ids to create a new class

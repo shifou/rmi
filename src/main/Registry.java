@@ -93,7 +93,7 @@ public class Registry {
 			for (int i = 1; i < line.length; i++) {
 				args[i - 1] = line[i];
 			}
-			Class<?> obj = Class.forName("application." + line[0]);
+			Class<?> obj = Class.forName(line[0]);
 			Constructor<?> objConstructor = null;
 			if(line.length>2){
 				objConstructor = obj.getConstructor(String[].class);
