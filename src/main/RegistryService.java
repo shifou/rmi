@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.net.Socket;
 
 import ror.Remote440;
+import ror.Remote440Exception;
 import ror.RemoteObjectReference;
 import data.Message;
 import data.msgType;
@@ -203,7 +204,12 @@ public class RegistryService implements Runnable {
 					
 					types[i] = Remote440.class;
 					
-					String id=((RemoteObjectReference) args[i]).getID();
+					String id ="";
+					try {
+						id = ((RemoteObjectReference) args[i]).getID();
+					} catch (Remote440Exception e) {
+						
+					}
 					if(Server.reg.realmp.containsKey(id))
 					{
 						args[i] =  Server.reg.realmp.get(id);

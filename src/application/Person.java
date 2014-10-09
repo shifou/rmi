@@ -10,7 +10,12 @@ import ror.RemoteObjectReference;
  **/
 public interface Person extends Remote440 {
 
-	
-	public String create(Remote440 a, Remote440 b) throws Remote440Exception;
-	
+	/**
+	 * The first argument should be a FibonacciCalc type, while the second
+	 * argument should be a StringConcat type, then returns the concatenated
+	 * String, (first) (second) (nth Fibonacci number)
+	 * */
+	public String create(Remote440 a, Remote440 b, String first, String second,
+			Integer n) throws Remote440Exception;
+
 }

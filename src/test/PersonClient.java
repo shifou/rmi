@@ -22,7 +22,7 @@ public class PersonClient {
 			RemoteObjectReference fib = reg.lookup("fibonacci1");
 			RemoteObjectReference person = reg.lookup("person1");
 			Person p = (Person)person.localize();
-			System.out.println(p.create(fib, sc));
+			System.out.println(p.create(fib, sc, "Lixun", " Mao", 10));
 		}
 		catch (UnknownHostException e){
 			
