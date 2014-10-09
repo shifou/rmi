@@ -1,16 +1,5 @@
+// this file is used for bind service int the beginning
+
 application.FibonacciCalcImpl fibonacci1
 application.StringConcatImpl stringconcat1
 application.PersonImpl person1
-// class string id
-// concat string of 2 objects add 2 ids to create a new class
-
-
-//class string id concatsting() addid()
-// bind ob1 ob2
-//lookup ob1, ob2
-// concatstring(ror,ror)
-
-
-//class string name last visitor name counter login() 
-// bind ob1
-// lookup 

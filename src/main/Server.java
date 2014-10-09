@@ -1,6 +1,6 @@
 /*
- * Server class used for listening from slaves join information 
- * and create the connection thread
+ * Server class used for listening from client request 
+ * 
  */
 package main;
 
@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Server {
+	
+	// global registry
 	public static Registry reg;
 
 	public static void main(String args[]) throws Exception {
@@ -27,6 +29,8 @@ public class Server {
 			System.out.println("please input Integer as the port");
 			return;
 		}
+		// read class conf from file if available
+		// one line one class conf
 		ArrayList<String> services = new ArrayList<String>();
 		if (args.length == 2) {
 			String serviceList = args[1];
@@ -52,8 +56,10 @@ public class Server {
 			System.out.println("bind registry port error");
 			System.exit(-1);
 		}
+		// if conf file exist we bind those service in advance
 		if (args.length == 2)
 			reg.addServices(services);
+		// begin listen
 		reg.listen();
 		System.out.println("Server close");
 	}

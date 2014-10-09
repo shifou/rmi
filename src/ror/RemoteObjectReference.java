@@ -38,7 +38,7 @@ public class RemoteObjectReference implements Serializable, Remote440 {
 		 * stub names are the name of the implementing class followed by _Stub
 		 */
 		String stubName = this.class_name + "_Stub";
-		System.out.println(stubName);
+		//System.out.println(stubName);
 		try {
 			Class<?> stub_class = Class.forName(stubName);
 			Constructor<?> objConstructor = stub_class.getConstructor(

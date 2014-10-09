@@ -9,9 +9,14 @@ public class serverTest{
 			System.out.format("Usage: ./serverTest <registryIp> <registryPort>");
 			return;
 		}
+		// when server start
+		// already has application.FibonacciCalcImpl fibonacci1
+		//			   application.StringConcatImpl stringconcat1
+		//			   application.PersonImpl person1
 		LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));
 		FibonacciCalcImpl fib= new FibonacciCalcImpl();
 		TrackerImpl t = new TrackerImpl("Server");
+		//bind tracker1
 		reg.bind("tracker1", t);
 		System.out.println(reg.list());
 		System.out.println("----");
