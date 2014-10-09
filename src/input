@@ -1,3 +1,5 @@
+// this file is used for bind service int the beginning
+
 application.FibonacciCalcImpl fibonacci1
 application.StringConcatImpl stringconcat1
 application.PersonImpl person1
