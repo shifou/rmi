@@ -6,7 +6,7 @@ import main.LocalRegistry;
 public class serverTest{
 	public static void main(String args[]) throws Exception {
 		if(args.length!=2){
-			System.out.format("Usage: ./server <registryIp> <registryPort>");
+			System.out.format("Usage: ./serverTest <registryIp> <registryPort>");
 			return;
 		}
 		LocalRegistry reg = new LocalRegistry(args[0], Integer.parseInt(args[1]));

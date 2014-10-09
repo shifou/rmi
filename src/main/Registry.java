@@ -85,6 +85,8 @@ public class Registry {
 		Object p =null;
 		String []line=null;
 		for(String hold: serviceNames){
+			if(hold.startsWith("//") || hold.equals(""))
+				continue;
 		try {
 			line= hold.split(" ");
 			String[] args = new String[line.length - 1];
