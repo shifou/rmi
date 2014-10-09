@@ -13,8 +13,9 @@ import ror.*;
 
 
 public class Registry {
-
+	// store servicename -> ror
 	public ConcurrentHashMap<String, RemoteObjectReference> mp;
+	// store servicename -> object
 	public ConcurrentHashMap<String, Object> realmp;
 	public ServerSocket listenSocket;
 	public String ipaddr;
@@ -44,6 +45,7 @@ public class Registry {
 		while (running) {
 			Socket clientSocket;
 			try {
+				// get a client socket
 				clientSocket = listenSocket.accept();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -57,6 +59,7 @@ public class Registry {
 					+ clientSocket.getPort() );
 			RegistryService registryService;
 			try {
+				// create the handler thread for this particular socket
 				registryService = new RegistryService(requestId, clientSocket);
 				new Thread(registryService).start();
 
@@ -79,7 +82,8 @@ public class Registry {
 	public void stop() {
 		running = false;
 	}
-
+	// add service with a construct of string[] args type
+	// and store into the map 
 	public void addServices(ArrayList<String> serviceNames) {
 		RemoteObjectReference ror=null;
 		Object p =null;
@@ -95,11 +99,12 @@ public class Registry {
 			}
 			Class<?> obj = Class.forName(line[0]);
 			Constructor<?> objConstructor = null;
+			// if have other string args
 			if(line.length>2){
 				objConstructor = obj.getConstructor(String[].class);
 				p = objConstructor.newInstance(new Object[]{args});
 			}
-				
+			// if not
 			else {
 				objConstructor = obj.getConstructor();
 				p =  objConstructor.newInstance();
@@ -134,8 +139,10 @@ public class Registry {
 			e.printStackTrace();
 			continue;
 		}
+		// put object into the hashmap 
 		realmp.put(line[1],p);
 		ror =new RemoteObjectReference(this.ipaddr,port,line[0],line[1]);
+		// put ror into the hashmap
 		mp.put(line[1],ror);
 		}
 	}

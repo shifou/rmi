@@ -29,6 +29,7 @@ public class LocalRegistry {
 
   
   public String list() throws IOException{
+	  // send type list message to server registry
 	  Message msg = new Message( msgType.LIST);
       Socket clientSocket = new Socket(this.ip, this.port);
       ObjectOutputStream objOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -36,6 +37,7 @@ public class LocalRegistry {
       objOutput.flush();
       ObjectInputStream	objInput = new ObjectInputStream(clientSocket.getInputStream());
       Message rep=null;
+      // receive the message
 	try {
 		rep = (Message) objInput.readObject();
 	} catch (ClassNotFoundException e) {
@@ -50,6 +52,7 @@ public class LocalRegistry {
   }
   public RemoteObjectReference lookup(String serviceName) throws Exception {
     try {
+    	// send type lookup message with servicename to the server registry
       Message msg = new Message(msgType.LOOKUP, serviceName);
       Socket clientSocket = new Socket(this.ip, this.port);
       ObjectOutputStream objOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -57,14 +60,17 @@ public class LocalRegistry {
       objOutput.writeObject(msg);
       objOutput.flush();
       ObjectInputStream	objInput = new ObjectInputStream(clientSocket.getInputStream());
+      // receive the message
       Message rep = (Message) objInput.readObject();
       objInput.close();
       objOutput.close();
       clientSocket.close();
+      // if lookup success
       if (rep.getResponType()==msgType.LOOKUPOK) {
         RemoteObjectReference ror = rep.getROR();
         return ror;
       } else {
+      //fail
         throw new Remote440Exception("no such service!");
       }
     } catch (Exception e) {
@@ -72,7 +78,7 @@ public class LocalRegistry {
     }
   }
   public String rebind(String serviceName, Object ob) throws IOException{
-
+	// send type rebind message with servicename and object to the server registry
       Message msg = new Message(serviceName,ob,msgType.REBIND);
       Socket socket=null;
 	try {
@@ -88,6 +94,7 @@ public class LocalRegistry {
       objOutput.flush();
       ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
       Message rep=null;
+   // receive the message
 	try {
 		rep = (Message)in.readObject();
 	} catch (ClassNotFoundException e) {
@@ -101,7 +108,8 @@ public class LocalRegistry {
     
 }
 public String unbind(String serviceName) throws IOException {
-	  Message msg = new Message(msgType.UNBIND,serviceName);
+	// send type unbind message with servicename to the server registry	  
+	Message msg = new Message(msgType.UNBIND,serviceName);
       Socket socket=null;
 	try {
 		socket = new Socket(this.ip, this.port);
@@ -125,6 +133,7 @@ public String unbind(String serviceName) throws IOException {
   		e1.printStackTrace();
   	}
       Message rep=null;
+      // receive the message
 	try {
 		rep = (Message)in.readObject();
 	} catch (ClassNotFoundException e) {
@@ -138,6 +147,8 @@ public String unbind(String serviceName) throws IOException {
 }
 
 public String bind(String string, Remote440 ob) throws IOException {
+	// send type bind message with servicename and object to the server registry	  
+	
 	 Message msg = new Message(string,ob,msgType.BIND);
      Socket socket=null;
 	try {
@@ -162,6 +173,7 @@ public String bind(String string, Remote440 ob) throws IOException {
  		e1.printStackTrace();
  	}
      Message rep=null;
+     // receive the message
 	try {
 		rep = (Message)in.readObject();
 	} catch (ClassNotFoundException e) {

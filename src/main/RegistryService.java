@@ -35,6 +35,7 @@ public class RegistryService implements Runnable {
 	@Override
 	public void run() {
 		Message receiveMessage = null;
+		// keep running 
 		while (running) {
 			try {
 				receiveMessage = (Message) objInput.readObject();
@@ -51,6 +52,7 @@ public class RegistryService implements Runnable {
 				running = false;
 				break;
 			}
+			// handle depend on the msgType
 			switch (receiveMessage.getResponType()) {
 			case UNBIND:
 				handleUNBIND(receiveMessage);
@@ -87,8 +89,10 @@ public class RegistryService implements Runnable {
 	}
 	
 	public void handleUNBIND(Message receiveMessage) {
+		// get the servicename we want to unbind
 		String name = receiveMessage.getObjectID();
 		boolean check1=false;
+		//check whether this servicename exist in the registry right now
 		if(Server.reg.mp.containsKey(name)){
 			Server.reg.mp.remove(name);
 			Server.reg.realmp.remove(name);
@@ -96,11 +100,13 @@ public class RegistryService implements Runnable {
 		}
 		String ans="";
 		Message mes=null;
+		// if exist
 		if(check1)
 		{
 			ans="unbind "+name+" from registry!";
 			mes = new Message(ans,msgType.UNBINDOK);
 		}
+		//if not
 		else{
 			ans="no such service unbind "+name+" from registry error!";
 			mes=new Message(ans,msgType.UNBINDERROR);
@@ -115,16 +121,20 @@ public class RegistryService implements Runnable {
 	}
 	
 	public void handleBIND(Message receiveMessage) {
+		// get the servicename and object we want to bind
 		String ident=receiveMessage.getObjectID();
 		Object ob =receiveMessage.getReturnVal();
 		String ans="";
 		Message mes=null;
+		//generate the ror
 		RemoteObjectReference ror= new RemoteObjectReference(Server.reg.ipaddr,Server.reg.port,ob.getClass().getName(),ident);
+		// if the service already exist we return error
 		if(Server.reg.realmp.containsKey(ident)){
 			ans="already has this service, try using rebind";
 			mes = new Message(ans,msgType.BINDERROR);
 		}
 		else{
+		// if not exist we bind
 		Server.reg.realmp.put(ident,ob);
 		Server.reg.mp.put(ident,ror);
 		ans="bind service successfully!";
@@ -139,19 +149,24 @@ public class RegistryService implements Runnable {
 		System.out.println(ans);
 	}
 	public void handleREBIND(Message receiveMessage) {
+		// get the servicename and object we want to bind
 		String name=receiveMessage.getObjectID();
 		Object ob =receiveMessage.getReturnVal();
 		String ans="";
 		Message mes=null;
+		//generate ror
 		RemoteObjectReference ror= new RemoteObjectReference(Server.reg.ipaddr,Server.reg.port,ob.getClass().getName(),name);
+		// if service exist we rebind
 		if(Server.reg.mp.containsKey(name)){
 			ans="rebind successfully!";
 			mes = new Message(ans,msgType.REBINDOK);
 		}
+		// if not we should bind the service
 		else{
 			ans="service not exist, bind this service!";
 			mes = new Message(ans,msgType.REBINDINFO);
 		}
+		// both cases we are doing the same way
 		Server.reg.realmp.put(name,ob);
 		Server.reg.mp.put(name,ror);
 		try {
@@ -163,6 +178,7 @@ public class RegistryService implements Runnable {
 		System.out.println(ans);
 	}
 	private void handleINVOKE(Message receiveMessage) {
+		// get the servicename, methodname, args[] object array and the really object for invoking
 		String name = receiveMessage.getObjectID();
 		String methodName = receiveMessage.getMethodName();
 		Object realObj = Server.reg.realmp.get(name);
@@ -171,29 +187,20 @@ public class RegistryService implements Runnable {
 		String msg=null;
 		Message mes = null;
 		boolean run=true;
+		// if agrs not null 
 		if (args != null) {
 			Class[] types = new Class[args.length];
 			for (int i = 0; i < types.length; i++) {
+				// if this args[i] is null or if this args[i] is not serializable we berak 
 				if(args[i]==null || !(args[i] instanceof Serializable)){
 					System.out.println("no serializable args or args is null");
 					msg="no serializable args or args is null";
 					run=false;
 					break;
 				}
+				// if args[i] is a ror actually we get the Remote440 type always
 				if (args[i] instanceof Remote440) {
-					/*
-					Class className = null;
-					try {
-						className = Class
-								.forName(((RemoteObjectReference) args[i])
-										.getClassName());
-					} catch (ClassNotFoundException e) {
-						run=false;
-						msg=e.getMessage();
-						System.out.println("not found the class");
-						e.printStackTrace();
-						break;
-					}*/
+					
 					types[i] = Remote440.class;
 					
 					String id=((RemoteObjectReference) args[i]).getID();
@@ -210,7 +217,7 @@ public class RegistryService implements Runnable {
 				} else {
 					types[i] = args[i].getClass();
 				}
-				System.out.println(types[i]+"---");
+				//System.out.println(types[i]+"---");
 			}
 			if(run==false){
 				 mes = new Message(msg,msgType.INVOKEERROR);
@@ -225,6 +232,7 @@ public class RegistryService implements Runnable {
 			}
 			
 			try {
+				// construct method with args
 				method = realObj.getClass().getMethod(methodName, types);
 			} catch (NoSuchMethodException e) {
 				
@@ -241,10 +249,10 @@ public class RegistryService implements Runnable {
 		else { 
 			// null Argument
 			try {
+				//construct method without args
 				method = realObj.getClass().getMethod(methodName,
 						(Class[]) null);
 			} catch (NoSuchMethodException e) {
-				
 				run=false;
 				msg=e.getMessage();
 				e.printStackTrace();
@@ -257,6 +265,7 @@ public class RegistryService implements Runnable {
 		}
 		Object returnVal=null;
 		try {
+			//trying invoke and catch exception
 			returnVal = method.invoke(realObj, args);
 		} catch (IllegalAccessException e) {
 			run=false;
@@ -273,6 +282,7 @@ public class RegistryService implements Runnable {
 		}
 		Object ans=null;
 		try {
+			// return val should be Serializable
 		ans= checkRet(returnVal);
        }catch(Exception e){
 			run=false;
@@ -300,7 +310,7 @@ public class RegistryService implements Runnable {
 		}
 		return ret;	
 	}
-
+	// send message
 	public int send(Message mes) throws IOException {
 		try {
 			objOutput.writeObject(mes);
@@ -312,6 +322,7 @@ public class RegistryService implements Runnable {
 	}
 
 	private void handleLIST(Message receiveMessage) {
+		// print the current service name 
 		String ans = "";
 		int i = 1;
 		for (String each : Server.reg.mp.keySet()) {
@@ -330,12 +341,15 @@ public class RegistryService implements Runnable {
 	}
 
 	private void handleLOOKUP(Message receiveMessage) {
+		// get the servicename
 		String name = receiveMessage.getObjectID();
 		String ans = "no such service! ";
 		Message mes = null;
+		// if exist
 		if (Server.reg.mp.containsKey(name)) {
 			mes = new Message(Server.reg.mp.get(name), msgType.LOOKUPOK);
 		} else {
+			// else
 			ans = "no corresponding ROR found!";
 			mes = new Message(ans, msgType.LOOKUPERROR);
 		}
