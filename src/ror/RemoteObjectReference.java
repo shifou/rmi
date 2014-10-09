@@ -2,6 +2,7 @@ package ror;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.net.InetAddress;
 
 
 
@@ -13,10 +14,10 @@ public class RemoteObjectReference implements Serializable  {
 	private String class_name;
 	private String ID;
 	
-	public RemoteObjectReference(String IP, int port, String r_i_name, String ID) {
+	public RemoteObjectReference(String ipaddr, int port, String r_i_name, String ID) {
 		
 		this.serverPort = port;
-		this.serverIP = IP;
+		this.serverIP = ipaddr;
 		this.class_name = r_i_name;
 		this.ID = ID;
 	}

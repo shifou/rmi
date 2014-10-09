@@ -41,19 +41,28 @@ public class RegistryService implements Runnable {
 			try {
 				receiveMessage = (Message) objInput.readObject();
 			} catch (ClassNotFoundException e) {
-				// System.out.println("read disconnected message");
+				System.out.println("request: "+this.id+" closed");
 				running = false;
 				break;
 			} catch (EOFException e) {
-				// System.out.println("detect disconnected message");
+				System.out.println("request: "+this.id+" eof closed");
 				running = false;
 				break;
 			} catch (Exception e) {
-				// System.out.println("-----");
+				System.out.println("request: "+this.id+" closed");
 				running = false;
 				break;
 			}
 			switch (receiveMessage.getResponType()) {
+			case UNBIND:
+				handleUNBIND(receiveMessage);
+				break;
+			case REBIND:
+				handleREBIND(receiveMessage);
+				break;
+			case BIND:
+				handleBIND(receiveMessage);
+				break;
 			case LOOKUP:
 				handleLOOKUP(receiveMessage);
 				break;
@@ -68,6 +77,92 @@ public class RegistryService implements Runnable {
 				continue;
 			}
 		}
+		try {
+			objInput.close();
+			objOutput.close();
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	}
+	
+	public void handleUNBIND(Message receiveMessage) {
+		String name = receiveMessage.getObjectID();
+		boolean check1=false;
+		if(Server.reg.mp.containsKey(name)){
+			Server.reg.mp.remove(name);
+			Server.reg.realmp.remove(name);
+			check1=true;
+		}
+		String ans="";
+		Message mes=null;
+		if(check1)
+		{
+			ans="unbind "+name+" from registry!";
+			mes = new Message(ans,msgType.UNBINDOK);
+		}
+		else{
+			ans="no such service unbind "+name+" from registry error!";
+			mes=new Message(ans,msgType.UNBINDERROR);
+		}
+		try {
+			send(mes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(ans);
+	}
+	
+	public void handleBIND(Message receiveMessage) {
+		String ident=receiveMessage.getObjectID();
+		Object ob =receiveMessage.getReturnVal();
+		String ans="";
+		Message mes=null;
+		RemoteObjectReference ror= new RemoteObjectReference(Server.reg.ipaddr,Server.reg.port,ob.getClass().getName(),ident);
+		if(Server.reg.realmp.containsKey(ident)){
+			ans="already has this service, try using rebind";
+			mes = new Message(ans,msgType.BINDERROR);
+		}
+		else{
+		Server.reg.realmp.put(ident,ob);
+		Server.reg.realmp.put(ident,ror);
+		ans="bind service successfully!";
+		mes = new Message(ans,msgType.BINDOK);
+		}
+		try {
+			send(mes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(ans);
+	}
+	public void handleREBIND(Message receiveMessage) {
+		String name=receiveMessage.getObjectID();
+		Object ob =receiveMessage.getReturnVal();
+		String ans="";
+		Message mes=null;
+		RemoteObjectReference ror= new RemoteObjectReference(Server.reg.ipaddr,Server.reg.port,ob.getClass().getName(),name);
+		if(Server.reg.mp.containsKey(name)){
+			ans="rebind successfully!";
+			mes = new Message(ans,msgType.REBINDOK);
+		}
+		else{
+			ans="service not exist, bind this service!";
+			mes = new Message(ans,msgType.REBINDINFO);
+		}
+		Server.reg.realmp.put(name,ob);
+		Server.reg.mp.put(name,ror);
+		try {
+			send(mes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(ans);
 	}
 	private void handleINVOKE(Message receiveMessage) {
 		String name = receiveMessage.getObjectID();
@@ -236,11 +331,10 @@ public class RegistryService implements Runnable {
 	private void handleLOOKUP(Message receiveMessage) {
 		// TODO Auto-generated method stub
 		String name = receiveMessage.getObjectID();
-		System.out.println(name);
+		//System.out.println(name);
 		String ans = "no such service! ";
 		Message mes = null;
 		if (Server.reg.mp.containsKey(name)) {
-			System.out.println("It contains!");
 			mes = new Message(Server.reg.mp.get(name), msgType.LOOKUPOK);
 		} else {
 			ans = "no corresponding ROR found!";

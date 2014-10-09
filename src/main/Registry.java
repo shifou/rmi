@@ -3,6 +3,7 @@ package main;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -25,7 +26,8 @@ public class Registry {
 		try {
 			port=registryPort;
 			listenSocket = new ServerSocket((short) registryPort);
-			ipaddr=listenSocket.getInetAddress().getHostAddress();
+			ipaddr=InetAddress.getLocalHost().getHostAddress();
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
 			mp = new ConcurrentHashMap<String, RemoteObjectReference>();
 			realmp = new ConcurrentHashMap<String, Object>();
 			System.out.println("Registry start listen at: " + registryPort);
@@ -48,9 +50,11 @@ public class Registry {
 				System.out.println("socket server accept failed");
 				continue;
 			}
-			System.out.println("Request " + requestId + " client: "
+			if(clientSocket==null)
+				continue;
+			System.out.println("Request " + requestId + " handler in "
 					+ clientSocket.getInetAddress() + ":"
-					+ clientSocket.getPort() + " join in");
+					+ clientSocket.getPort() );
 			RegistryService registryService;
 			try {
 				registryService = new RegistryService(requestId, clientSocket);
@@ -75,40 +79,8 @@ public class Registry {
 	public void stop() {
 		running = false;
 	}
-	public void unbind(String name) {
-		boolean check1=false;
-		if(Server.reg.mp.containsKey(name)){
-			Server.reg.mp.remove(name);
-			Server.reg.realmp.remove(name);
-			check1=true;
-		}
-		if(check1)
-		{
-			System.out.println("unbind "+name+" from registry!");
-		}
-		else{
-			System.out.println("no such service unbind "+name+" from registry error!");
-			}
-	}
-	public void rebind(String name, Object ob) {
-		boolean check1=false;
-		if(Server.reg.mp.containsKey(name)){
-			Server.reg.realmp.put(name,ob);
-			check1=true;
-		}else{
-			Server.reg.realmp.put(name,ob);
-		}
-		if(check1)
-		{
-			System.out.println("rebind "+name+" successfully!");
-		}
-		else{
-			System.out.println(name+" does not exist, will bind!");
-			
-			bind(name,ob);
-		}
-	}
-	public void bind(ArrayList<String> serviceNames) {
+
+	public void addServices(ArrayList<String> serviceNames) {
 		RemoteObjectReference ror=null;
 		Object p =null;
 		String []line=null;
@@ -166,16 +138,5 @@ public class Registry {
 		}
 	}
 
-	public void bind(String ident,Object ob) {
-		RemoteObjectReference ror= new RemoteObjectReference(this.ipaddr,port,ob.getClass().getName(),ident);
-		if(realmp.containsKey(ident)){
-			System.out.println("already has this service, try using rebind");
-			return;
-		}
-		realmp.put(ident,ob);
-		mp.put(ident,ror);
-
-		
-	}
 
 }
