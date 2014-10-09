@@ -3,7 +3,7 @@ package application;
 import ror.Remote440;
 import ror.Remote440Exception;
 
-public interface ClientTracker extends Remote440 {
+public interface Tracker extends Remote440 {
 
 	public void login() throws Remote440Exception;
 	public void logout() throws Remote440Exception;

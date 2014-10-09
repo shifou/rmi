@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import ror.Remote440Exception;
 
-public class ClientTrackerImpl implements ClientTracker, Serializable {
+public class TrackerImpl implements Tracker, Serializable {
 
 
 	private static final long serialVersionUID = -9090809609648693263L;
@@ -12,7 +12,7 @@ public class ClientTrackerImpl implements ClientTracker, Serializable {
 	private int totalCount;
 	private String lastClientName;
 	
-	public ClientTrackerImpl(String name){
+	public TrackerImpl(String name){
 		this.currentCount = 0;
 		this.lastClientName = name;
 		this.totalCount = 0;
