@@ -8,15 +8,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.ServerSocket;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
-import data.msgType;
 
 public class Server {
 	public static Registry reg;
@@ -44,6 +38,7 @@ public class Server {
 			while ((line = b.readLine()) != null) {
 				services.add(line);
 			}
+			b.close();
 		} catch (Exception e) {
 			System.out.println("file list not found");
 			return;

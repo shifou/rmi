@@ -8,11 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.concurrent.ConcurrentHashMap;
-
-import ror.Remote440;
 import ror.RemoteObjectReference;
 import data.Message;
 import data.msgType;
@@ -82,7 +78,7 @@ public class RegistryService implements Runnable {
 			objOutput.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	    
@@ -110,7 +106,7 @@ public class RegistryService implements Runnable {
 		try {
 			send(mes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		System.out.println(ans);
@@ -135,7 +131,7 @@ public class RegistryService implements Runnable {
 		try {
 			send(mes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		System.out.println(ans);
@@ -159,7 +155,7 @@ public class RegistryService implements Runnable {
 		try {
 			send(mes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		System.out.println(ans);
@@ -216,7 +212,7 @@ public class RegistryService implements Runnable {
 				 try {
 						send(mes);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					
 					}
@@ -226,12 +222,12 @@ public class RegistryService implements Runnable {
 			try {
 				method = realObj.getClass().getMethod(methodName, types);
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
+				
 				run=false;
 				msg=e.getMessage();
 				e.printStackTrace();
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
+				
 				run=false;
 				msg=e.getMessage();
 				e.printStackTrace();
@@ -243,12 +239,12 @@ public class RegistryService implements Runnable {
 				method = realObj.getClass().getMethod(methodName,
 						(Class[]) null);
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
+				
 				run=false;
 				msg=e.getMessage();
 				e.printStackTrace();
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
+				
 				run=false;
 				msg=e.getMessage();
 				e.printStackTrace();
@@ -288,7 +284,6 @@ public class RegistryService implements Runnable {
 		try {
 			send(mes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 }
@@ -329,9 +324,7 @@ public class RegistryService implements Runnable {
 	}
 
 	private void handleLOOKUP(Message receiveMessage) {
-		// TODO Auto-generated method stub
 		String name = receiveMessage.getObjectID();
-		//System.out.println(name);
 		String ans = "no such service! ";
 		Message mes = null;
 		if (Server.reg.mp.containsKey(name)) {

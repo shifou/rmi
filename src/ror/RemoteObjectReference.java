@@ -2,7 +2,7 @@ package ror;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.net.InetAddress;
+
 
 
 
@@ -25,9 +25,6 @@ public class RemoteObjectReference implements Serializable  {
 	public Object localize() {
 		
 		String stubName = "application." + this.class_name + "_Stub";
-		System.out.println(stubName);
-		System.out.println(this.class_name);
-		System.out.println(this.ID);
 		try {
 			Class<?> stub_class = Class.forName(stubName);
 			Constructor<?> objConstructor = stub_class.getConstructor(String.class, int.class, String.class);
