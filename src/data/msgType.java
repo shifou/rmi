@@ -4,9 +4,15 @@
 package data;
 
 public enum msgType {
+	BIND,
+	BINDOK,
+	BINDERROR,
+	UNBIND,
+	UNBINDOK,
+	UNBINDERROR,
 	REBIND,
 	REBINDOK,
-	REBINDERROR,
+	REBINDINFO,
 	LOOKUP,
 	LOOKUPERROR,
 	LOOKUPOK,
@@ -14,5 +20,5 @@ public enum msgType {
 	INVOKE,
 	REPLY,
 	INVOKEOK,
-	INVOKEERROR
+	INVOKEERROR,
 }

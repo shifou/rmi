@@ -24,6 +24,7 @@ public class Server {
 		int registryPort=0;
 		if (args.length != 2) {
 			System.out.format("Usage: ./Server <registryPort> <service_list>");
+			return;
 		}
 		try {
 			registryPort = Integer.parseInt(args[0]);
@@ -52,7 +53,7 @@ public class Server {
 			System.out.println("bind registry port error");
 			System.exit(-1);
 		}
-		reg.bind(services);
+		reg.addServices(services);
 		reg.listen();
 		System.out.println("Server close");
 	}
