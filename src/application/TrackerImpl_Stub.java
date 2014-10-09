@@ -11,26 +11,33 @@ import data.Message;
 import data.msgType;
 import ror.Remote440Exception;
 
+/**
+ * TrackerImpl_Stub is the stub for TrackerImpl application of the interface. So
+ * when a method is invoked, the stub connects with the server where TrackerImpl
+ * is hosted, sends the server a message to invoke the method in question with
+ * appropriate arguments, reads the message reply from the server, determines
+ * whether the invocation was successful and if it was, returns the result by
+ * reading it from the server's message
+ * */
 public class TrackerImpl_Stub implements Tracker {
-	
 
 	private int serverPort;
 	private InetAddress serverIP;
 	private ObjectInputStream serverIn;
 	private ObjectOutputStream serverOut;
 	private String identifier;
-	
-	public TrackerImpl_Stub(String IP, int port, String identifier){
+
+	public TrackerImpl_Stub(String IP, int port, String identifier) {
 		this.serverPort = port;
 		this.identifier = identifier;
 		try {
 			this.serverIP = InetAddress.getByName(IP);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			
+
 		}
 	}
-	
+
 	@Override
 	public void login() throws Remote440Exception {
 		try {
@@ -39,20 +46,20 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
-			Message message = new Message(msgType.INVOKE,null, new String("login"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, null, new String(
+					"login"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
 			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 
@@ -66,20 +73,20 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
-			Message message = new Message(msgType.INVOKE,null, new String("logout"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, null, new String(
+					"logout"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
 			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 
@@ -94,23 +101,22 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
-			Message message = new Message(msgType.INVOKE,null, new String("getTotalVisited"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, null, new String(
+					"getTotalVisited"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
+			} else {
+				result = (Integer) (recvMessage.getReturnVal());
 			}
-			else {
-				result = (Integer)(recvMessage.getReturnVal());
-			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 		return result;
@@ -126,20 +132,20 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
 			Object[] args = new Object[1];
 			args[0] = name;
-			Message message = new Message(msgType.INVOKE,args, new String("setVisitorName"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, args, new String(
+					"setVisitorName"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
 			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 
@@ -154,23 +160,22 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
-			Message message = new Message(msgType.INVOKE,null, new String("getLastVisitorName"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, null, new String(
+					"getLastVisitorName"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
+			} else {
+				result = (String) (recvMessage.getReturnVal());
 			}
-			else {
-				result = (String)(recvMessage.getReturnVal());
-			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 		return result;
@@ -185,28 +190,25 @@ public class TrackerImpl_Stub implements Tracker {
 			this.serverOut.flush();
 
 			this.serverIn = new ObjectInputStream(toServer.getInputStream());
-			Message message = new Message(msgType.INVOKE,null, new String("getCurrentVisitors"), new String(this.identifier));
+			Message message = new Message(msgType.INVOKE, null, new String(
+					"getCurrentVisitors"), new String(this.identifier));
 			this.serverOut.writeObject(message);
 			this.serverOut.flush();
-			
-			Message recvMessage = (Message)(this.serverIn.readObject());
+
+			Message recvMessage = (Message) (this.serverIn.readObject());
 			toServer.close();
-			if (recvMessage.getResponType() == msgType.INVOKEERROR){
+			if (recvMessage.getResponType() == msgType.INVOKEERROR) {
 				throw new Remote440Exception("failed!");
+			} else {
+				result = (Integer) (recvMessage.getReturnVal());
 			}
-			else {
-				result = (Integer)(recvMessage.getReturnVal());
-			}
-			
+
 		} catch (IOException e) {
 			throw new Remote440Exception("Failed!");
-		}
-		catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			throw new Remote440Exception("Failed!");
 		}
 		return result;
 	}
-	
-
 
 }
