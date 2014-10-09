@@ -13,7 +13,7 @@ public class FibonacciClient {
 
 	public static void main(String[] args){
 		if(args.length!=2){
-			System.out.format("Usage: ./server <registryIp> <registryPort>");
+			System.out.format("Arguments should be of the following form: <registryIp> <registryPort>");
 			return;
 		}
 		try {
